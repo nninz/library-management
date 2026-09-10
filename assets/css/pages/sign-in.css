@@ -1,0 +1,89 @@
+.auth-wrapper {
+  min-height: calc(100vh - 78px);
+}
+
+.input-group {
+  transition: border-color var(--transition-fast) ease;
+}
+
+.input-group:focus-within {
+  border-color: var(--color-primary);
+}
+
+.input-group input {
+  outline: none;
+}
+
+.toggle-visibility {
+  cursor: pointer;
+  color: var(--color-gray);
+  transition:
+    color var(--transition-fast) ease,
+    transform var(--transition-fast) ease;
+}
+
+.toggle-visibility:hover {
+  color: var(--color-primary);
+}
+
+.toggle-visibility:active {
+  transform: scale(0.88);
+}
+
+.icon-stack {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-stack i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity var(--transition-fast) ease,
+    transform var(--transition-fast) ease;
+}
+
+.icon-stack .icon-eye-slash {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.toggle-visibility.is-visible .icon-eye {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.toggle-visibility.is-visible .icon-eye-slash {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.btn-submit {
+  cursor: pointer;
+}
+
+.auth-divider {
+  position: relative;
+  text-align: center;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--border-thin);
+  background-color: var(--color-light-gray);
+}
+
+.auth-divider span {
+  position: relative;
+  background-color: var(--color-white);
+  padding: 0 var(--space-12);
+}

@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books | Britech College Library</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <style>
+      body {
+        background-color: var(--color-accent);
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 260px;
+        flex-shrink: 0;
+        background-color: var(--color-secondary);
+        color: var(--color-white);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-24) var(--space-20);
+        border-bottom: var(--border-thin) solid rgba(255, 255, 255, 0.12);
+      }
+
+      .sidebar-brand img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .sidebar-brand h2 {
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: 0.03em;
+        color: var(--color-white);
+        line-height: 1.2;
+      }
+
+      .sidebar-brand p {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        padding: var(--space-16) var(--space-12);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-12) var(--space-16);
+        border-radius: var(--radius-md);
+        color: rgba(255, 255, 255, 0.75);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-medium);
+        transition:
+          background-color var(--transition-fast) ease,
+          color var(--transition-fast) ease;
+      }
+
+      .sidebar-link i {
+        width: 18px;
+        text-align: center;
+      }
+
+      .sidebar-link:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: var(--color-white);
+      }
+
+      .sidebar-link.active {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .sidebar-logout {
+        padding: var(--space-16) var(--space-20);
+        border-top: var(--border-thin) solid rgba(255, 255, 255, 0.12);
+      }
+
+      .main-area {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        background-color: var(--color-white);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+
+      .search-input {
+        width: 100%;
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--color-primary);
+      }
+
+      .notif-dot {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-navy);
+        border: 2px solid var(--color-white);
+      }
+
+      .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-14);
+        flex-shrink: 0;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: var(--space-4) var(--space-12);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-12);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .status-available {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-borrowed {
+        background-color: var(--color-navy-50);
+        color: var(--color-secondary);
+      }
+      .status-returned {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-due {
+        background-color: #fde2e2;
+        color: #b3261e;
+      }
+      .status-active {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-inactive {
+        background-color: #fde2e2;
+        color: #b3261e;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: var(--font-size-12);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-gray);
+        padding: var(--space-12) var(--space-8);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+      }
+
+      .data-table td {
+        padding: var(--space-16) var(--space-8);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+        font-size: var(--font-size-14);
+        color: var(--color-dark);
+      }
+
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--color-gray);
+        padding: var(--space-4);
+        transition: color var(--transition-fast) ease;
+      }
+
+      .icon-btn:hover {
+        color: var(--color-primary);
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-8);
+      }
+
+      .page-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        border: var(--border-thin) solid var(--color-light-gray);
+        color: var(--color-gray);
+        font-size: var(--font-size-14);
+        cursor: pointer;
+        background-color: var(--color-white);
+      }
+
+      .page-btn.active {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .filter-select {
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+        background-color: var(--color-white);
+        color: var(--color-dark);
+      }
+
+      .report-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-16);
+        background-color: var(--color-primary-50);
+        color: var(--color-primary);
+      }
+
+      .tab-btn {
+        background: none;
+        border: none;
+        padding: var(--space-12) var(--space-4);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-gray);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+      }
+
+      .tab-btn.active {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-primary);
+      }
+
+      .due-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-12) 0;
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+      }
+
+      .due-item:last-child {
+        border-bottom: none;
+      }
+
+      .due-cover {
+        width: 40px;
+        height: 52px;
+        border-radius: var(--radius-sm);
+        background-color: var(--color-accent);
+        color: var(--color-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .settings-input {
+        width: 100%;
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+      }
+
+      .settings-input:focus {
+        border-color: var(--color-primary);
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--color-light-gray);
+        border-radius: var(--radius-full);
+        transition: background-color var(--transition-fast) ease;
+      }
+
+      .toggle-slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: var(--color-white);
+        border-radius: var(--radius-full);
+        transition: transform var(--transition-fast) ease;
+      }
+
+      .toggle-switch input:checked + .toggle-slider {
+        background-color: var(--color-primary);
+      }
+
+      .toggle-switch input:checked + .toggle-slider::before {
+        transform: translateX(20px);
+      }
+
+      @media (max-width: 860px) {
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- =========================
+         SIDEBAR
+    ========================= -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img src="../assets/images/logo/britech-logo (1).png" alt="Britech College Logo" />
+          <div>
+            <h2>BRITECH LIBRARY</h2>
+            <p>MANAGEMENT SYSTEM</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="sidebar-link"> <i class="fa-solid fa-gauge"></i> Dashboard </a>
+          <a href="books.html" class="sidebar-link active"> <i class="fa-solid fa-book"></i> Books </a>
+          <a href="borrow-return.html" class="sidebar-link"> <i class="fa-solid fa-right-left"></i> Borrow / Return </a>
+          <a href="students.html" class="sidebar-link"> <i class="fa-solid fa-user-graduate"></i> Students </a>
+          <a href="reports.html" class="sidebar-link"> <i class="fa-solid fa-chart-column"></i> Reports </a>
+          <a href="settings.html" class="sidebar-link"> <i class="fa-solid fa-gear"></i> Settings </a>
+        </nav>
+
+        <div class="sidebar-logout">
+          <a href="../auth/sign-in.html" class="sidebar-link" style="padding-left: 0">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+         MAIN AREA
+    ========================= -->
+      <div class="main-area">
+        <!-- Topbar -->
+        <header class="topbar px-8 py-4">
+          <div class="d-flex items-center justify-between gap-6">
+            <div style="max-width: 420px; width: 100%">
+              <div class="d-flex items-center gap-3 bg-white border border-light-gray radius-full px-5 py-3">
+                <i class="fa-solid fa-magnifying-glass text-gray"></i>
+                <input
+                  type="text"
+                  placeholder="Search books, students, transactions..."
+                  class="search-input border-0 text-14"
+                  style="background: transparent"
+                />
+              </div>
+            </div>
+
+            <div class="d-flex items-center gap-6">
+              <div style="position: relative">
+                <i class="fa-regular fa-bell text-gray text-xl"></i>
+                <span class="notif-dot"></span>
+              </div>
+
+              <div class="d-flex items-center gap-3">
+                <div class="avatar-circle">AL</div>
+                <div>
+                  <p class="text-secondary text-14 font-semibold">Admin Librarian</p>
+                  <p class="text-gray text-12">Librarian</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page content -->
+        <main class="px-8 py-8">
+          <div class="d-flex items-center justify-between mb-8 flex-wrap gap-4">
+            <h1 class="text-secondary text-3xl font-bold">Books</h1>
+            <a href="#" class="bg-primary text-white px-6 py-3 radius-md text-14 font-semibold">
+              <i class="fa-solid fa-plus"></i> Add Book
+            </a>
+          </div>
+
+          <div class="bg-white radius-lg shadow-sm p-6 mb-6">
+            <div class="d-flex items-center gap-4 flex-wrap">
+              <div
+                class="d-flex items-center gap-3 bg-white border border-light-gray radius-md px-4 py-3"
+                style="flex: 1; min-width: 220px"
+              >
+                <i class="fa-solid fa-magnifying-glass text-gray"></i>
+                <input
+                  type="text"
+                  placeholder="Search by title, author, ISBN..."
+                  class="search-input border-0 text-14"
+                  style="background: transparent"
+                />
+              </div>
+              <select class="filter-select radius-md px-4 py-3 text-14">
+                <option value="All Categories">All Categories</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Science">Science</option>
+                <option value="Technology">Technology</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Programming">Programming</option>
+                <option value="Database">Database</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Education">Education</option>
+                <option value="Psychology">Psychology</option>
+                <option value="Business">Business</option>
+                <option value="History">History</option>
+                <option value="Romance">Romance</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Horror">Horror</option>
+              </select>
+              <select class="filter-select radius-md px-4 py-3 text-14">
+                <option>Availability</option>
+                <option>Available</option>
+                <option>Borrowed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="bg-white radius-lg shadow-sm p-6">
+            <div style="overflow-x: auto">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>ISBN</th>
+                    <th>Availability</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HTML & CSS: Design and Build Websites</td>
+                    <td>Jon Duckett</td>
+                    <td>Web Development</td>
+                    <td>978-1118008188</td>
+                    <td><span class="status-badge status-available">Available</span></td>
+                    <td>
+                      <button class="icon-btn"><i class="fa-solid fa-eye"></i></button>
+                      <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Java: How to Program</td>
+                    <td>Paul Deitel & Harvey Deitel</td>
+                    <td>Programming</td>
+                    <td>978-0133807806</td>
+                    <td><span class="status-badge status-borrowed">Borrowed</span></td>
+                    <td>
+                      <button class="icon-btn"><i class="fa-solid fa-eye"></i></button>
+                      <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Database System Concepts</td>
+                    <td>Abraham Silberschatz, Henry F. Korth, S. Sudarshan</td>
+                    <td>Database</td>
+                    <td>978-0078022159</td>
+                    <td><span class="status-badge status-available">Available</span></td>
+                    <td>
+                      <button class="icon-btn"><i class="fa-solid fa-eye"></i></button>
+                      <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Don't Make Me Think, Revisited</td>
+                    <td>Steve Krug</td>
+                    <td>Web Development</td>
+                    <td>978-0321965516</td>
+                    <td><span class="status-badge status-available">Available</span></td>
+                    <td>
+                      <button class="icon-btn"><i class="fa-solid fa-eye"></i></button>
+                      <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Operating System Concepts</td>
+                    <td>Abraham Silberschatz, Peter B. Galvin, Greg Gagne</td>
+                    <td>Computer Science</td>
+                    <td>978-1119456330</td>
+                    <td><span class="status-badge status-borrowed">Borrowed</span></td>
+                    <td>
+                      <button class="icon-btn"><i class="fa-solid fa-eye"></i></button>
+                      <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Python Crash Course</td>
+                    <td>Eric Matthes</td>
+                    <td>Programming</td>
+                    <td>978-1718502703</td>
+                    <td><span class="status-badge status-available">Available</span></td>
+                    <td>
+                      <button class="icon-btn"><i class="fa-solid fa-eye"></i></button>
+                      <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination mt-6">
+              <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

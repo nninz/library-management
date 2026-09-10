@@ -3,9 +3,434 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+
+    <title>Dashboard | Britech College Library</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
   </head>
+
   <body>
-    <h1>Dashboard Page</h1>
+    <div class="app-shell">
+      <!-- =========================
+           SIDEBAR
+      ========================== -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img src="../assets/images/logo/britech-logo (1).png" alt="Britech College Logo" />
+
+          <div>
+            <h2>BRITECH LIBRARY</h2>
+            <p>MANAGEMENT SYSTEM</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="sidebar-link active">
+            <i class="fa-solid fa-gauge"></i>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="books.html" class="sidebar-link">
+            <i class="fa-solid fa-book"></i>
+            <span>Books</span>
+          </a>
+
+          <a href="borrow-return.html" class="sidebar-link">
+            <i class="fa-solid fa-right-left"></i>
+            <span>Borrow / Return</span>
+          </a>
+
+          <a href="students.html" class="sidebar-link">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+
+          <a href="reports.html" class="sidebar-link">
+            <i class="fa-solid fa-chart-column"></i>
+            <span>Reports</span>
+          </a>
+
+          <a href="settings.html" class="sidebar-link">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-logout">
+          <a href="../auth/sign-in.html" class="sidebar-link logout-link">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+           MAIN AREA
+      ========================== -->
+      <div class="main-area">
+        <!-- =========================
+             TOPBAR
+        ========================== -->
+        <header class="topbar px-8 py-4">
+          <div class="d-flex items-center justify-between gap-6">
+            <!-- Search -->
+            <div class="dashboard-search-container">
+              <div class="dashboard-search-shell">
+                <i class="fa-solid fa-magnifying-glass text-gray"></i>
+
+                <input type="text" placeholder="Search books, students, transactions..." class="search-input text-14" />
+              </div>
+            </div>
+
+            <!-- Right side -->
+            <div class="d-flex items-center gap-6">
+              <!-- Notifications -->
+              <div class="notification-wrapper">
+                <button
+                  type="button"
+                  id="notificationButton"
+                  class="notification-button"
+                  aria-label="Notifications"
+                  aria-expanded="false"
+                >
+                  <i class="fa-regular fa-bell text-gray text-xl"></i>
+                  <span class="notification-dot" id="notifDot"></span>
+                </button>
+
+                <!-- Notification dropdown -->
+                <div class="notification-dropdown" id="notificationDropdown" aria-hidden="true">
+                  <div class="notification-header">
+                    <div>
+                      <h3>Notifications</h3>
+                      <p>Library reminders</p>
+                    </div>
+
+                    <button
+                      type="button"
+                      id="closeNotification"
+                      class="notification-close"
+                      aria-label="Close notifications"
+                    >
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <div class="notification-list" id="notificationList"></div>
+
+                  <div class="notification-footer">
+                    <a href="borrow-return.html"> View Borrow &amp; Return </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- User -->
+              <div class="d-flex items-center gap-3">
+                <div class="avatar-circle">AL</div>
+
+                <div>
+                  <p class="text-secondary text-14 font-semibold">Admin Librarian</p>
+
+                  <p class="text-gray text-12">Librarian</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+             DASHBOARD CONTENT
+        ========================== -->
+        <main class="px-8 py-8">
+          <h1 class="text-secondary text-3xl font-bold mb-8">Dashboard</h1>
+
+          <!-- =========================
+               STATISTICS
+          ========================== -->
+          <div class="stats-grid mb-8">
+            <!-- Total Books -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-stat-card">
+              <div class="d-flex items-center gap-4">
+                <div class="stat-icon-box bg-primary-tint">
+                  <i class="fa-solid fa-book"></i>
+                </div>
+
+                <div>
+                  <p class="text-gray text-14">Total Books</p>
+
+                  <h2 id="totalBooks" class="text-secondary text-2xl font-bold">0</h2>
+                </div>
+              </div>
+
+              <p class="text-gray text-12 mt-3">All books in library</p>
+            </div>
+
+            <!-- Available Books -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-stat-card">
+              <div class="d-flex items-center gap-4">
+                <div class="stat-icon-box bg-navy-tint">
+                  <i class="fa-solid fa-book-open"></i>
+                </div>
+
+                <div>
+                  <p class="text-gray text-14">Available Books</p>
+
+                  <h2 id="availableBooks" class="text-secondary text-2xl font-bold">0</h2>
+                </div>
+              </div>
+
+              <p class="text-gray text-12 mt-3">Books available</p>
+            </div>
+
+            <!-- Borrowed Books -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-stat-card">
+              <div class="d-flex items-center gap-4">
+                <div class="stat-icon-box bg-secondary-tint">
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+
+                <div>
+                  <p class="text-gray text-14">Borrowed Books</p>
+
+                  <h2 id="borrowedBooks" class="text-secondary text-2xl font-bold">0</h2>
+                </div>
+              </div>
+
+              <p class="text-gray text-12 mt-3">Currently borrowed</p>
+            </div>
+
+            <!-- Students -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-stat-card">
+              <div class="d-flex items-center gap-4">
+                <div class="stat-icon-box bg-dark-tint">
+                  <i class="fa-solid fa-user-graduate"></i>
+                </div>
+
+                <div>
+                  <p class="text-gray text-14">Registered Students</p>
+
+                  <h2 id="registeredStudents" class="text-secondary text-2xl font-bold">0</h2>
+                </div>
+              </div>
+
+              <p class="text-gray text-12 mt-3">Total students</p>
+            </div>
+          </div>
+
+          <!-- =========================
+               RECENT TRANSACTIONS + DUE TODAY
+          ========================== -->
+          <div class="content-grid">
+            <!-- Recent Transactions -->
+            <div class="bg-white radius-lg shadow-sm p-6">
+              <div class="d-flex items-center justify-between mb-4">
+                <h3 class="text-secondary text-lg font-semibold">Recent Transactions</h3>
+
+                <a href="borrow-return.html" id="recentViewAll" class="text-primary text-14 font-semibold">
+                  View All
+                </a>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Book Title</th>
+                      <th>Student</th>
+                      <th>Type</th>
+                      <th>Date</th>
+                      <th>Due Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="recentTransactionsBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Due Today -->
+            <div class="bg-white radius-lg shadow-sm p-6">
+              <div class="d-flex items-center justify-between mb-4">
+                <h3 class="text-secondary text-lg font-semibold">Due Today</h3>
+
+                <a href="borrow-return.html" id="dueViewAll" class="text-primary text-14 font-semibold"> View All </a>
+              </div>
+
+              <div id="dueTodayList"></div>
+            </div>
+          </div>
+
+          <div class="bg-white radius-lg shadow-sm p-6 mb-8 dashboard-panel">
+            <div class="d-flex items-center justify-between mb-4">
+              <h3 class="text-secondary text-lg font-semibold">Quick Actions</h3>
+            </div>
+
+            <div class="quick-actions-grid">
+              <a href="books.html" class="quick-action">
+                <span class="quick-action-icon bg-primary-tint">
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+
+                <span>
+                  <strong>Add Book</strong>
+                  <small>Add a new book to the library</small>
+                </span>
+              </a>
+
+              <a href="students.html" class="quick-action">
+                <span class="quick-action-icon bg-navy-tint">
+                  <i class="fa-solid fa-user-plus"></i>
+                </span>
+
+                <span>
+                  <strong>Add Student</strong>
+                  <small>Register a new student</small>
+                </span>
+              </a>
+
+              <a href="borrow-return.html" class="quick-action">
+                <span class="quick-action-icon bg-secondary-tint">
+                  <i class="fa-solid fa-book-bookmark"></i>
+                </span>
+
+                <span>
+                  <strong>Borrow Book</strong>
+                  <small>Process a new borrowing</small>
+                </span>
+              </a>
+
+              <a href="borrow-return.html" class="quick-action">
+                <span class="quick-action-icon bg-dark-tint">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </span>
+
+                <span>
+                  <strong>Return Book</strong>
+                  <small>Process a book return</small>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <!-- =========================
+               BORROWING ACTIVITY + DUE SOON
+          ========================== -->
+          <div class="dashboard-feature-grid mb-8">
+            <!-- Borrowing Activity -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-panel">
+              <div class="d-flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="text-secondary text-lg font-semibold">Borrowing Activity</h3>
+
+                  <p class="text-gray text-12 mt-1">Borrowed books this month</p>
+                </div>
+
+                <span class="dashboard-period"> This Month </span>
+              </div>
+
+              <div id="borrowingChart" class="borrowing-chart"></div>
+            </div>
+
+            <!-- Due Soon -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-panel">
+              <div class="d-flex items-center justify-between mb-4">
+                <h3 class="text-secondary text-lg font-semibold">Due Soon</h3>
+
+                <a href="borrow-return.html" class="text-primary text-14 font-semibold"> View All </a>
+              </div>
+
+              <div id="dueSoonList"></div>
+            </div>
+          </div>
+
+          <!-- =========================
+               MOST BORROWED / OVERDUE / RECENT BOOKS
+          ========================== -->
+          <div class="dashboard-three-grid mb-8">
+            <!-- Most Borrowed -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-panel">
+              <div class="d-flex items-center justify-between mb-4">
+                <h3 class="text-secondary text-lg font-semibold">Most Borrowed Books</h3>
+
+                <a href="reports.html" class="text-primary text-14 font-semibold"> Report </a>
+              </div>
+
+              <div id="mostBorrowedList"></div>
+            </div>
+
+            <!-- Overdue -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-panel">
+              <div class="d-flex items-center justify-between mb-4">
+                <h3 class="text-secondary text-lg font-semibold">Overdue Books</h3>
+
+                <a href="borrow-return.html" class="text-primary text-14 font-semibold"> View All </a>
+              </div>
+
+              <div id="overdueList"></div>
+            </div>
+
+            <!-- Recently Added -->
+            <div class="bg-white radius-lg shadow-sm p-6 dashboard-panel">
+              <div class="d-flex items-center justify-between mb-4">
+                <h3 class="text-secondary text-lg font-semibold">Recently Added Books</h3>
+
+                <a href="books.html" class="text-primary text-14 font-semibold"> View All </a>
+              </div>
+
+              <div id="recentBooksList"></div>
+            </div>
+          </div>
+
+          <!-- =========================
+               MONTHLY SUMMARY
+          ========================== -->
+          <div class="bg-white radius-lg shadow-sm p-6 dashboard-panel">
+            <div class="d-flex items-center justify-between mb-4">
+              <h3 class="text-secondary text-lg font-semibold">Monthly Summary</h3>
+
+              <a href="reports.html" class="text-primary text-14 font-semibold"> Open Reports </a>
+            </div>
+
+            <div class="monthly-summary-grid">
+              <div class="summary-item">
+                <span>Books Borrowed</span>
+                <strong id="monthBorrowed">0</strong>
+              </div>
+
+              <div class="summary-item">
+                <span>Books Returned</span>
+                <strong id="monthReturned">0</strong>
+              </div>
+
+              <div class="summary-item">
+                <span>Active Students</span>
+                <strong id="activeStudents">0</strong>
+              </div>
+
+              <div class="summary-item">
+                <span>Available Books</span>
+                <strong id="summaryAvailable">0</strong>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="../assets/js/main.js"></script>
   </body>
 </html>

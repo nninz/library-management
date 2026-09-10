@@ -1,0 +1,1356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | Britech College Library</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <style>
+      body {
+        background-color: var(--color-accent);
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 260px;
+        flex-shrink: 0;
+        background-color: var(--color-secondary);
+        color: var(--color-white);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-24) var(--space-20);
+        border-bottom: var(--border-thin) solid rgba(255, 255, 255, 0.12);
+      }
+
+      .sidebar-brand img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .sidebar-brand h2 {
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: 0.03em;
+        color: var(--color-white);
+        line-height: 1.2;
+      }
+
+      .sidebar-brand p {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        padding: var(--space-16) var(--space-12);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-12) var(--space-16);
+        border-radius: var(--radius-md);
+        color: rgba(255, 255, 255, 0.75);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-medium);
+        transition:
+          background-color var(--transition-fast) ease,
+          color var(--transition-fast) ease;
+      }
+
+      .sidebar-link i {
+        width: 18px;
+        text-align: center;
+      }
+
+      .sidebar-link:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: var(--color-white);
+      }
+
+      .sidebar-link.active {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .sidebar-logout {
+        padding: var(--space-16) var(--space-20);
+        border-top: var(--border-thin) solid rgba(255, 255, 255, 0.12);
+      }
+
+      .main-area {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        background-color: var(--color-white);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+
+      .search-input {
+        width: 100%;
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--color-primary);
+      }
+
+      .notif-dot {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-navy);
+        border: 2px solid var(--color-white);
+      }
+
+      .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-14);
+        flex-shrink: 0;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: var(--space-4) var(--space-12);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-12);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .status-available {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-borrowed {
+        background-color: var(--color-navy-50);
+        color: var(--color-secondary);
+      }
+      .status-returned {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-due {
+        background-color: #fde2e2;
+        color: #b3261e;
+      }
+      .status-active {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-inactive {
+        background-color: #fde2e2;
+        color: #b3261e;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: var(--font-size-12);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-gray);
+        padding: var(--space-12) var(--space-8);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+      }
+
+      .data-table td {
+        padding: var(--space-16) var(--space-8);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+        font-size: var(--font-size-14);
+        color: var(--color-dark);
+      }
+
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--color-gray);
+        padding: var(--space-4);
+        transition: color var(--transition-fast) ease;
+      }
+
+      .icon-btn:hover {
+        color: var(--color-primary);
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-8);
+      }
+
+      .page-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        border: var(--border-thin) solid var(--color-light-gray);
+        color: var(--color-gray);
+        font-size: var(--font-size-14);
+        cursor: pointer;
+        background-color: var(--color-white);
+      }
+
+      .page-btn.active {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .filter-select {
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+        background-color: var(--color-white);
+        color: var(--color-dark);
+      }
+
+      .report-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-16);
+        background-color: var(--color-primary-50);
+        color: var(--color-primary);
+      }
+
+      .tab-btn {
+        background: none;
+        border: none;
+        padding: var(--space-12) var(--space-4);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-gray);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+      }
+
+      .tab-btn.active {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-primary);
+      }
+
+      .due-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-12) 0;
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+      }
+
+      .due-item:last-child {
+        border-bottom: none;
+      }
+
+      .due-cover {
+        width: 40px;
+        height: 52px;
+        border-radius: var(--radius-sm);
+        background-color: var(--color-accent);
+        color: var(--color-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .settings-input {
+        width: 100%;
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+      }
+
+      .settings-input:focus {
+        border-color: var(--color-primary);
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--color-light-gray);
+        border-radius: var(--radius-full);
+        transition: background-color var(--transition-fast) ease;
+      }
+
+      .toggle-slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: var(--color-white);
+        border-radius: var(--radius-full);
+        transition: transform var(--transition-fast) ease;
+      }
+
+      .toggle-switch input:checked + .toggle-slider {
+        background-color: var(--color-primary);
+      }
+
+      .toggle-switch input:checked + .toggle-slider::before {
+        transform: translateX(20px);
+      }
+
+      @media (max-width: 860px) {
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- =========================
+         SIDEBAR
+    ========================= -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img src="../assets/images/logo/britech-logo (1).png" alt="Britech College Logo" />
+          <div>
+            <h2>BRITECH LIBRARY</h2>
+            <p>MANAGEMENT SYSTEM</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="sidebar-link"> <i class="fa-solid fa-gauge"></i> Dashboard </a>
+          <a href="books.html" class="sidebar-link"> <i class="fa-solid fa-book"></i> Books </a>
+          <a href="borrow-return.html" class="sidebar-link"> <i class="fa-solid fa-right-left"></i> Borrow / Return </a>
+          <a href="students.html" class="sidebar-link"> <i class="fa-solid fa-user-graduate"></i> Students </a>
+          <a href="reports.html" class="sidebar-link"> <i class="fa-solid fa-chart-column"></i> Reports </a>
+          <a href="settings.html" class="sidebar-link active"> <i class="fa-solid fa-gear"></i> Settings </a>
+        </nav>
+
+        <div class="sidebar-logout">
+          <a href="../auth/sign-in.html" class="sidebar-link" style="padding-left: 0">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+         MAIN AREA
+    ========================= -->
+      <div class="main-area">
+        <!-- Topbar -->
+        <header class="topbar px-8 py-4">
+          <div class="d-flex items-center justify-between gap-6">
+            <div style="max-width: 420px; width: 100%">
+              <div class="d-flex items-center gap-3 bg-white border border-light-gray radius-full px-5 py-3">
+                <i class="fa-solid fa-magnifying-glass text-gray"></i>
+                <input
+                  type="text"
+                  placeholder="Search books, students, transactions..."
+                  class="search-input border-0 text-14"
+                  style="background: transparent"
+                />
+              </div>
+            </div>
+
+            <div class="d-flex items-center gap-6">
+              <div style="position: relative">
+                <i class="fa-regular fa-bell text-gray text-xl"></i>
+                <span class="notif-dot"></span>
+              </div>
+
+              <div class="d-flex items-center gap-3">
+                <div class="avatar-circle">AL</div>
+                <div>
+                  <p class="text-secondary text-14 font-semibold">Admin Librarian</p>
+                  <p class="text-gray text-12">Librarian</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page content -->
+        <main class="px-8 py-8">
+          <h1 class="text-secondary text-3xl font-bold mb-8">Settings</h1>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+            <div class="bg-white radius-lg shadow-sm p-6">
+              <h3 class="text-secondary text-lg font-semibold mb-6">Profile Information</h3>
+
+              <div class="mb-4">
+                <label class="d-block text-secondary text-14 font-semibold mb-2">Full Name</label>
+                <input
+                  type="text"
+                  value="Admin Librarian"
+                  class="settings-input radius-md px-4 py-3 text-14"
+                  style="width: 100%"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="d-block text-secondary text-14 font-semibold mb-2">Email</label>
+                <input
+                  type="email"
+                  value="library@britech.edu.ph"
+                  class="settings-input radius-md px-4 py-3 text-14"
+                  style="width: 100%"
+                />
+              </div>
+              <div class="mb-6">
+                <label class="d-block text-secondary text-14 font-semibold mb-2">Role</label>
+                <input
+                  type="text"
+                  value="Librarian"
+                  disabled
+                  class="settings-input radius-md px-4 py-3 text-14"
+                  style="width: 100%; background-color: var(--color-light)"
+                />
+              </div>
+
+              <button class="bg-primary text-white px-6 py-3 radius-md text-14 font-semibold border-0">
+                Save Changes
+              </button>
+            </div>
+
+            <div class="bg-white radius-lg shadow-sm p-6">
+              <h3 class="text-secondary text-lg font-semibold mb-6">Change Password</h3>
+
+              <div class="mb-4">
+                <label class="d-block text-secondary text-14 font-semibold mb-2">Current Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter current password"
+                  class="settings-input radius-md px-4 py-3 text-14"
+                  style="width: 100%"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="d-block text-secondary text-14 font-semibold mb-2">New Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter new password"
+                  class="settings-input radius-md px-4 py-3 text-14"
+                  style="width: 100%"
+                />
+              </div>
+              <div class="mb-6">
+                <label class="d-block text-secondary text-14 font-semibold mb-2">Confirm New Password</label>
+                <input
+                  type="password"
+                  placeholder="Confirm new password"
+                  class="settings-input radius-md px-4 py-3 text-14"
+                  style="width: 100%"
+                />
+              </div>
+
+              <button class="bg-primary text-white px-6 py-3 radius-md text-14 font-semibold border-0">
+                Update Password
+              </button>
+            </div>
+
+            <div class="bg-white radius-lg shadow-sm p-6" style="grid-column: span 2">
+              <h3 class="text-secondary text-lg font-semibold mb-6">Notification Preferences</h3>
+
+              <div
+                class="d-flex items-center justify-between mb-4"
+                style="padding-bottom: 16px; border-bottom: 1px solid var(--color-light-gray)"
+              >
+                <div>
+                  <p class="text-secondary text-14 font-semibold">Email Notifications</p>
+                  <p class="text-gray text-12">Receive updates about overdue books and returns</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="d-flex items-center justify-between">
+                <div>
+                  <p class="text-secondary text-14 font-semibold">New Student Registrations</p>
+                  <p class="text-gray text-12">Get notified when a new student registers</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+
+    <style>
+      /* Functional UI enhancements */
+      .search-input {
+        border: 0 !important;
+        outline: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+      .search-shell,
+      .d-flex.items-center.gap-3.bg-white.border.border-light-gray.radius-md.px-4.py-3 {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+      button,
+      a,
+      .icon-btn,
+      .page-btn {
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .app-toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 9999;
+        background: #17324d;
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-size: 14px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+      }
+      .app-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 25, 40, 0.48);
+        z-index: 9998;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .app-modal {
+        background: #fff;
+        border-radius: 14px;
+        width: min(560px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        padding: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+      .app-modal h3 {
+        margin: 0 0 18px;
+        color: #17324d;
+        font-size: 20px;
+      }
+      .app-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .app-form-grid .full {
+        grid-column: 1/-1;
+      }
+      .app-modal label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #17324d;
+        margin-bottom: 6px;
+      }
+      .app-modal input,
+      .app-modal select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+      }
+      .app-modal-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+      }
+      .app-modal-actions button {
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 0;
+        font-weight: 600;
+      }
+      .app-modal .primary {
+        background: var(--color-primary);
+        color: #fff;
+      }
+      .app-modal .secondary {
+        background: #fff;
+        color: #17324d;
+        border: 1px solid #ddd !important;
+      }
+      .clickable-card {
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .clickable-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+    </style>
+    <script>
+      (function () {
+        "use strict";
+        const KEY_BOOKS = "britech_library_books_v1",
+          KEY_STUDENTS = "britech_library_students_v1",
+          KEY_TX = "britech_library_transactions_v1",
+          KEY_PROFILE = "britech_library_profile_v1",
+          KEY_PREF = "britech_library_prefs_v1";
+
+        const defaultBooks = [
+          {
+            id: "978-1234567890",
+            title: "Introduction to HTML",
+            author: "John Smith",
+            category: "Technology",
+            status: "Available",
+          },
+          {
+            id: "978-9811234567",
+            title: "Java Programming",
+            author: "Deitel, H.M.",
+            category: "Technology",
+            status: "Borrowed",
+          },
+          {
+            id: "978-0078022159",
+            title: "Database System Concepts",
+            author: "Silberschatz, Korth",
+            category: "Database",
+            status: "Available",
+          },
+          {
+            id: "978-1118008188",
+            title: "Web Design Basics",
+            author: "John Duckett",
+            category: "Web Design",
+            status: "Available",
+          },
+          {
+            id: "978-1119456330",
+            title: "Operating System Concepts",
+            author: "Abraham Silberschatz",
+            category: "Computer Science",
+            status: "Borrowed",
+          },
+          {
+            id: "978-0134692883",
+            title: "Python Basics",
+            author: "Dennis R. Downey",
+            category: "Programming",
+            status: "Available",
+          },
+        ];
+        const defaultStudents = [
+          { id: "2024001", name: "Juan Dela Cruz", course: "BSIT", email: "juan.delacruz@email.com", status: "Active" },
+          { id: "2024002", name: "Maria Santos", course: "BSIS", email: "maria.santos@email.com", status: "Active" },
+          { id: "2024003", name: "Pedro Garcia", course: "BSIT", email: "pedro.garcia@email.com", status: "Active" },
+          { id: "2024004", name: "Ana Reyes", course: "BSCS", email: "ana.reyes@email.com", status: "Inactive" },
+          {
+            id: "2024005",
+            name: "Mark Villanueva",
+            course: "BSIT",
+            email: "mark.villanueva@email.com",
+            status: "Active",
+          },
+        ];
+        const defaultTx = [
+          {
+            bookId: "978-1234567890",
+            book: "Introduction to HTML",
+            studentId: "2024001",
+            student: "Juan Dela Cruz",
+            type: "Borrow",
+            date: "2026-05-20",
+            due: "2026-05-27",
+            status: "Borrowed",
+          },
+          {
+            bookId: "978-9811234567",
+            book: "Java Programming",
+            studentId: "2024002",
+            student: "Maria Santos",
+            type: "Borrow",
+            date: "2026-05-19",
+            due: "2026-05-26",
+            status: "Borrowed",
+          },
+          {
+            bookId: "978-0078022159",
+            book: "Database System Concepts",
+            studentId: "2024003",
+            student: "Pedro Garcia",
+            type: "Return",
+            date: "2026-05-18",
+            due: "2026-05-18",
+            status: "Returned",
+          },
+          {
+            bookId: "978-1118008188",
+            book: "Web Design Basics",
+            studentId: "2024004",
+            student: "Ana Reyes",
+            type: "Borrow",
+            date: "2026-05-17",
+            due: "2026-05-24",
+            status: "Borrowed",
+          },
+          {
+            bookId: "978-1119456330",
+            book: "Operating System Concepts",
+            studentId: "2024005",
+            student: "Mark Villanueva",
+            type: "Return",
+            date: "2026-05-16",
+            due: "2026-05-16",
+            status: "Returned",
+          },
+        ];
+        function get(k, d) {
+          try {
+            let x = JSON.parse(localStorage.getItem(k));
+            return x ?? d;
+          } catch (e) {
+            return d;
+          }
+        }
+        function set(k, v) {
+          localStorage.setItem(k, JSON.stringify(v));
+        }
+        if (!localStorage.getItem(KEY_BOOKS)) set(KEY_BOOKS, defaultBooks);
+        if (!localStorage.getItem(KEY_STUDENTS)) set(KEY_STUDENTS, defaultStudents);
+        if (!localStorage.getItem(KEY_TX)) set(KEY_TX, defaultTx);
+        if (!localStorage.getItem(KEY_PROFILE))
+          set(KEY_PROFILE, { name: "Admin Librarian", email: "library@britech.edu.ph" });
+        if (!localStorage.getItem(KEY_PREF)) set(KEY_PREF, { email: true, newStudents: false });
+
+        const books = () => get(KEY_BOOKS, defaultBooks),
+          students = () => get(KEY_STUDENTS, defaultStudents),
+          tx = () => get(KEY_TX, defaultTx);
+        const esc = (s) =>
+          String(s ?? "").replace(
+            /[&<>"']/g,
+            (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m],
+          );
+        function toast(msg) {
+          let t = document.createElement("div");
+          t.className = "app-toast";
+          t.textContent = msg;
+          document.body.appendChild(t);
+          setTimeout(() => t.remove(), 2400);
+        }
+        function modal(title, html, onSave) {
+          const b = document.createElement("div");
+          b.className = "app-modal-backdrop";
+          b.innerHTML = `<div class="app-modal"><h3>${title}</h3>${html}<div class="app-modal-actions"><button type="button" class="secondary js-close">Cancel</button><button type="button" class="primary js-save">Save</button></div></div>`;
+          document.body.appendChild(b);
+          b.querySelector(".js-close").onclick = () => b.remove();
+          b.onclick = (e) => {
+            if (e.target === b) b.remove();
+          };
+          b.querySelector(".js-save").onclick = () => onSave(b);
+          return b;
+        }
+        function go(page) {
+          window.location.href = page;
+        }
+        function wireNav() {
+          document
+            .querySelectorAll('a[href="#"]')
+            .forEach((a) => a.addEventListener("click", (e) => e.preventDefault()));
+          document.querySelectorAll(".sidebar-link").forEach((a) => {
+            if (a.getAttribute("href") && a.getAttribute("href") !== "#") a.addEventListener("click", () => {});
+          });
+          const topSearch = document.querySelector(".topbar .search-input");
+          if (topSearch) {
+            topSearch.addEventListener("input", () => {
+              const q = topSearch.value.trim().toLowerCase();
+              if (!q) return;
+              const p = location.pathname.toLowerCase();
+              if (p.includes("books")) filterTable(document.querySelector(".data-table"), q);
+              else if (p.includes("students")) filterTable(document.querySelector(".data-table"), q);
+            });
+          }
+        }
+        function filterTable(table, q) {
+          if (!table) return;
+          [...table.tBodies].forEach((tb) =>
+            [...tb.rows].forEach((r) => (r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none")),
+          );
+        }
+        function addSearch(input, table, extraFn) {
+          if (!input) return;
+          input.addEventListener("input", () => {
+            const q = input.value.trim().toLowerCase();
+            if (extraFn) extraFn();
+            else filterTable(table, q);
+          });
+        }
+        function openInfo(title, content) {
+          modal(title, `<div style="font-size:14px;line-height:1.8;color:#555">${content}</div>`, (b) => b.remove());
+        }
+
+        function pageBooks() {
+          const table = document.querySelector(".data-table"),
+            tbody = table?.tBodies[0];
+          if (!tbody) return;
+          const render = (list = books()) => {
+            tbody.innerHTML = list
+              .map(
+                (b) =>
+                  `<tr data-id="${esc(b.id)}"><td>${esc(b.title)}</td><td>${esc(b.author)}</td><td>${esc(b.category)}</td><td>${esc(b.id)}</td><td><span class="status-badge ${b.status === "Available" ? "status-available" : "status-borrowed"}">${b.status}</span></td><td><button class="icon-btn js-view" title="View"><i class="fa-solid fa-eye"></i></button><button class="icon-btn js-edit" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>`,
+              )
+              .join("");
+            wireBookRows();
+            paginate(table);
+          };
+          function wireBookRows() {
+            tbody.querySelectorAll(".js-view").forEach(
+              (btn) =>
+                (btn.onclick = () => {
+                  let b = books().find((x) => x.id === btn.closest("tr").dataset.id);
+                  openInfo(
+                    "Book Details",
+                    `<b>Title:</b> ${esc(b.title)}<br><b>Author:</b> ${esc(b.author)}<br><b>Category:</b> ${esc(b.category)}<br><b>ISBN:</b> ${esc(b.id)}<br><b>Status:</b> ${esc(b.status)}`,
+                  );
+                }),
+            );
+            tbody.querySelectorAll(".js-edit").forEach(
+              (btn) =>
+                (btn.onclick = () => {
+                  let id = btn.closest("tr").dataset.id,
+                    b = books().find((x) => x.id === id);
+                  modal(
+                    "Edit Book",
+                    `<div class="app-form-grid"><div class="full"><label>Book Title</label><input id="f-title" value="${esc(b.title)}"></div><div><label>Author</label><input id="f-author" value="${esc(b.author)}"></div><div><label>Category</label><input id="f-cat" value="${esc(b.category)}"></div><div class="full"><label>ISBN</label><input id="f-id" value="${esc(b.id)}"></div></div>`,
+                    (m) => {
+                      b.title = m.querySelector("#f-title").value.trim();
+                      b.author = m.querySelector("#f-author").value.trim();
+                      b.category = m.querySelector("#f-cat").value.trim();
+                      b.id = m.querySelector("#f-id").value.trim() || id;
+                      let a = books().filter((x) => x.id !== id);
+                      a.push(b);
+                      set(KEY_BOOKS, a);
+                      render();
+                      toast("Book updated");
+                    },
+                  );
+                }),
+            );
+          }
+          const add = [...document.querySelectorAll("a")].find((a) => a.textContent.includes("Add Book"));
+          if (add)
+            add.onclick = (e) => {
+              e.preventDefault();
+              modal(
+                "Add Book",
+                `<div class="app-form-grid"><div class="full"><label>Book Title</label><input id="f-title" required></div><div><label>Author</label><input id="f-author"></div><div><label>Category</label><input id="f-cat" value="Technology"></div><div class="full"><label>ISBN</label><input id="f-id"></div></div>`,
+                (m) => {
+                  let title = m.querySelector("#f-title").value.trim(),
+                    id = m.querySelector("#f-id").value.trim();
+                  if (!title || !id) return toast("Please enter title and ISBN");
+                  let a = books();
+                  if (a.some((x) => x.id === id)) return toast("ISBN already exists");
+                  a.push({
+                    id,
+                    title,
+                    author: m.querySelector("#f-author").value.trim(),
+                    category: m.querySelector("#f-cat").value.trim() || "Technology",
+                    status: "Available",
+                  });
+                  set(KEY_BOOKS, a);
+                  render();
+                  toast("Book added");
+                },
+              );
+            };
+          const searches = [...document.querySelectorAll(".search-input")];
+          const bookSearch = searches.find((x) => x.placeholder.includes("title"));
+          if (bookSearch) bookSearch.addEventListener("input", () => apply());
+          const selects = document.querySelectorAll(".filter-select");
+          selects.forEach((s) => s.addEventListener("change", apply));
+          function apply() {
+            let q = bookSearch?.value.toLowerCase() || "",
+              cat = selects[0]?.value || "All Categories",
+              status = selects[1]?.value || "Availability";
+            render(
+              books().filter(
+                (b) =>
+                  (!q || [b.title, b.author, b.id].join(" ").toLowerCase().includes(q)) &&
+                  (cat === "All Categories" || b.category === cat) &&
+                  (status === "Availability" || b.status === status),
+              ),
+            );
+          }
+          render();
+        }
+        function pageStudents() {
+          const table = document.querySelector(".data-table"),
+            tbody = table?.tBodies[0];
+          if (!tbody) return;
+          function render(list = students()) {
+            tbody.innerHTML = list
+              .map(
+                (s) =>
+                  `<tr data-id="${esc(s.id)}"><td>${esc(s.id)}</td><td>${esc(s.name)}</td><td>${esc(s.course)}</td><td>${esc(s.email)}</td><td><span class="status-badge ${s.status === "Active" ? "status-active" : "status-inactive"}">${s.status}</span></td><td><button class="icon-btn js-view" title="View"><i class="fa-solid fa-eye"></i></button><button class="icon-btn js-edit" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>`,
+              )
+              .join("");
+            wire();
+            paginate(table);
+          }
+          function wire() {
+            tbody.querySelectorAll(".js-view").forEach(
+              (b) =>
+                (b.onclick = () => {
+                  let s = students().find((x) => x.id === b.closest("tr").dataset.id);
+                  openInfo(
+                    "Student Details",
+                    `<b>ID:</b> ${esc(s.id)}<br><b>Name:</b> ${esc(s.name)}<br><b>Course:</b> ${esc(s.course)}<br><b>Email:</b> ${esc(s.email)}<br><b>Status:</b> ${esc(s.status)}`,
+                  );
+                }),
+            );
+            tbody.querySelectorAll(".js-edit").forEach(
+              (b) =>
+                (b.onclick = () => {
+                  let id = b.closest("tr").dataset.id,
+                    s = students().find((x) => x.id === id);
+                  studentModal("Edit Student", s, id);
+                }),
+            );
+          }
+          function studentModal(title, s = {}, oldId = null) {
+            modal(
+              title,
+              `<div class="app-form-grid"><div><label>Student ID</label><input id="f-id" value="${esc(s.id)}"></div><div><label>Course</label><input id="f-course" value="${esc(s.course)}"></div><div class="full"><label>Full Name</label><input id="f-name" value="${esc(s.name)}"></div><div class="full"><label>Email</label><input id="f-email" type="email" value="${esc(s.email)}"></div><div><label>Status</label><select id="f-status"><option ${s.status === "Active" ? "selected" : ""}>Active</option><option ${s.status === "Inactive" ? "selected" : ""}>Inactive</option></select></div></div>`,
+              (m) => {
+                let id = m.querySelector("#f-id").value.trim(),
+                  name = m.querySelector("#f-name").value.trim();
+                if (!id || !name) return toast("Student ID and name are required");
+                let a = students().filter((x) => x.id !== oldId);
+                if (a.some((x) => x.id === id)) return toast("Student ID already exists");
+                a.push({
+                  id,
+                  name,
+                  course: m.querySelector("#f-course").value.trim(),
+                  email: m.querySelector("#f-email").value.trim(),
+                  status: m.querySelector("#f-status").value,
+                });
+                set(KEY_STUDENTS, a);
+                render();
+                toast(oldId ? "Student updated" : "Student added");
+              },
+            );
+          }
+          const add = [...document.querySelectorAll("a")].find((a) => a.textContent.includes("Add Student"));
+          if (add)
+            add.onclick = (e) => {
+              e.preventDefault();
+              studentModal("Add Student");
+            };
+          const top = document.querySelector(".topbar .search-input");
+          const tableSearch = top;
+          if (top)
+            top.addEventListener("input", () =>
+              render(
+                students().filter((s) => Object.values(s).join(" ").toLowerCase().includes(top.value.toLowerCase())),
+              ),
+            );
+          render();
+        }
+        function paginate(table) {
+          const rows = [...table.tBodies[0].rows],
+            controls = table.closest(".bg-white")?.querySelector(".pagination");
+          if (!controls) return;
+          let page = 1,
+            per = 2;
+          const btns = [...controls.querySelectorAll(".page-btn")];
+          const update = () => {
+            rows.forEach((r, i) => (r.style.display = Math.floor(i / per) + 1 === page ? "" : "none"));
+            btns.forEach((b, i) => {
+              if (/^\d+$/.test(b.textContent.trim())) b.classList.toggle("active", +b.textContent.trim() === page);
+            });
+            if (btns[0]) btns[0].disabled = page === 1;
+            if (btns.at(-1)) btns.at(-1).disabled = page === Math.max(1, Math.ceil(rows.length / per));
+          };
+          btns.forEach(
+            (b, idx) =>
+              (b.onclick = () => {
+                let t = b.textContent.trim(),
+                  max = Math.max(1, Math.ceil(rows.length / per));
+                if (b.querySelector(".fa-chevron-left")) page = Math.max(1, page - 1);
+                else if (b.querySelector(".fa-chevron-right")) page = Math.min(max, page + 1);
+                else if (/^\d+$/.test(t)) page = Math.min(max, +t);
+                update();
+              }),
+          );
+          update();
+        }
+
+        function pageBorrowReturn() {
+          const borrowPanel = document.getElementById("borrowPanel"),
+            returnPanel = document.getElementById("returnPanel");
+          if (!borrowPanel) return;
+          window.showTab = function (tab) {
+            borrowPanel.style.display = tab === "borrow" ? "block" : "none";
+            returnPanel.style.display = tab === "return" ? "block" : "none";
+            document.getElementById("tabBorrowBtn").classList.toggle("active", tab === "borrow");
+            document.getElementById("tabReturnBtn").classList.toggle("active", tab === "return");
+          };
+          const allInputs = borrowPanel.querySelectorAll("input"),
+            bStudent = allInputs[0],
+            bBook = allInputs[1],
+            bDates = borrowPanel.querySelectorAll('input[type="date"]');
+          const bSearchBtns = borrowPanel.querySelectorAll("button"); // search, search, clear, confirm
+          const bStudentName = borrowPanel.querySelectorAll("p.text-gray.text-14")[0],
+            bBookTitle = borrowPanel.querySelectorAll("p.text-gray.text-14")[1];
+          bSearchBtns[0].onclick = () => {
+            let s = students().find((x) => x.id === bStudent.value.trim());
+            bStudentName.textContent = s ? s.name : "Student not found";
+            toast(s ? "Student found" : "Student not found");
+          };
+          bSearchBtns[1].onclick = () => {
+            let b = books().find((x) => x.id === bBook.value.trim());
+            bBookTitle.textContent = b ? b.title : "Book not found";
+            toast(b ? "Book found" : "Book not found");
+          };
+          bDates[0].value = new Date().toISOString().slice(0, 10);
+          bDates[0].onchange = () => {};
+          const setDue = () => {
+            if (!bDates[1].value && bDates[0].value) {
+              let d = new Date(bDates[0].value + "T00:00:00");
+              d.setDate(d.getDate() + 7);
+              bDates[1].value = d.toISOString().slice(0, 10);
+            }
+          };
+          setDue();
+          bDates[0].addEventListener("change", setDue);
+          bSearchBtns[2].onclick = () => {
+            bStudent.value = "";
+            bBook.value = "";
+            bStudentName.textContent = "—";
+            bBookTitle.textContent = "—";
+            bDates[0].value = new Date().toISOString().slice(0, 10);
+            bDates[1].value = "";
+            setDue();
+          };
+          bSearchBtns[3].onclick = () => {
+            let s = students().find((x) => x.id === bStudent.value.trim()),
+              b = books().find((x) => x.id === bBook.value.trim());
+            if (!s || !b) return toast("Search a valid student and book first");
+            if (s.status !== "Active") return toast("Student is inactive");
+            if (b.status !== "Available") return toast("Book is not available");
+            let a = books();
+            a.find((x) => x.id === b.id).status = "Borrowed";
+            set(KEY_BOOKS, a);
+            let aTx = tx();
+            aTx.unshift({
+              bookId: b.id,
+              book: b.title,
+              studentId: s.id,
+              student: s.name,
+              type: "Borrow",
+              date: bDates[0].value,
+              due: bDates[1].value,
+              status: "Borrowed",
+            });
+            set(KEY_TX, aTx);
+            toast("Borrow confirmed");
+            location.reload();
+          };
+          const rInputs = returnPanel.querySelectorAll("input"),
+            rBook = rInputs[0],
+            rDate = rInputs[1],
+            rBtns = returnPanel.querySelectorAll("button");
+          rDate.value = new Date().toISOString().slice(0, 10);
+          rBtns[0].onclick = () => {
+            let b = books().find((x) => x.id === rBook.value.trim());
+            toast(b ? `Found: ${b.title}` : "Book not found");
+          };
+          rBtns[1].onclick = () => {
+            rBook.value = "";
+            rDate.value = new Date().toISOString().slice(0, 10);
+          };
+          rBtns[2].onclick = () => {
+            let b = books().find((x) => x.id === rBook.value.trim());
+            if (!b) return toast("Search a valid book first");
+            let a = books();
+            a.find((x) => x.id === b.id).status = "Available";
+            set(KEY_BOOKS, a);
+            let aTx = tx();
+            let open = [...aTx].find((x) => x.bookId === b.id && x.status === "Borrowed");
+            if (open) {
+              open.status = "Returned";
+              open.type = "Return";
+              open.date = rDate.value;
+              open.due = open.due || rDate.value;
+            } else
+              aTx.unshift({
+                bookId: b.id,
+                book: b.title,
+                studentId: "—",
+                student: "—",
+                type: "Return",
+                date: rDate.value,
+                due: rDate.value,
+                status: "Returned",
+              });
+            set(KEY_TX, aTx);
+            toast("Return confirmed");
+            location.reload();
+          };
+          const view = [...document.querySelectorAll("a")].find((a) => a.textContent.includes("View All"));
+          if (view)
+            view.onclick = (e) => {
+              e.preventDefault();
+              showTab("return");
+              toast("Showing return/transaction tools");
+            };
+        }
+        function pageDashboard() {
+          const stats = document.querySelectorAll(".stats-grid > div");
+          if (stats.length) {
+            let b = books(),
+              s = students(),
+              t = tx(),
+              vals = [
+                b.length,
+                b.filter((x) => x.status === "Available").length,
+                b.filter((x) => x.status === "Borrowed").length,
+                s.length,
+              ];
+            stats.forEach((card, i) => {
+              let h = card.querySelector("h2");
+              if (h) h.textContent = vals[i].toLocaleString();
+              card.classList.add("clickable-card");
+              card.title = "Click to open";
+              card.onclick = () => (i === 3 ? go("students.html") : go("books.html"));
+            });
+          }
+          const recentTable = document.querySelector(".data-table");
+          if (recentTable?.tBodies[0]) {
+            [...recentTable.tBodies[0].rows].forEach((row) => {
+              row.style.cursor = "pointer";
+              row.onclick = () => {
+                let type = row.cells[2]?.textContent.trim();
+                if (type === "Borrow") {
+                  go("borrow-return.html");
+                } else if (type === "Return") {
+                  go("borrow-return.html");
+                  setTimeout(() => {}, 0);
+                }
+              };
+              const status = row.querySelector(".status-badge");
+              if (status) status.title = "Open Borrow / Return";
+            });
+          }
+          const viewLinks = [...document.querySelectorAll('a[href="#"]')];
+          viewLinks.forEach(
+            (a) =>
+              (a.onclick = (e) => {
+                e.preventDefault();
+                let h = a.parentElement.querySelector("h3")?.textContent || "";
+                if (h.includes("Recent")) go("borrow-return.html");
+                else {
+                  let due = a.closest(".bg-white");
+                  openInfo(
+                    "Due Today",
+                    "Books listed here are due for return today. Use Borrow / Return to process returns.",
+                  );
+                }
+              }),
+          );
+          const dueItems = document.querySelectorAll(".due-item");
+          dueItems.forEach((item) => {
+            item.style.cursor = "pointer";
+            item.onclick = () => {
+              let title = item.querySelector("p.text-secondary")?.textContent || "Due book";
+              openInfo(
+                "Due Today",
+                `<b>${esc(title)}</b><br>This book is due today. Open Borrow / Return to process the return.`,
+              );
+            };
+          });
+          const bell = document.querySelector(".topbar .fa-bell")?.parentElement;
+          if (bell)
+            bell.onclick = () =>
+              openInfo(
+                "Notifications",
+                "Library notifications are available here. Check Due Today and recent transactions for current activity.",
+              );
+        }
+        function pageReports() {
+          document.querySelectorAll("button").forEach((btn) => {
+            if (btn.textContent.trim() === "Generate")
+              btn.onclick = () => {
+                let card = btn.closest(".bg-white"),
+                  title = card?.querySelector("p.text-secondary")?.textContent || "Report";
+                let b = books(),
+                  s = students(),
+                  t = tx(),
+                  rows =
+                    title === "Books Report"
+                      ? b.map((x) => [x.title, x.author, x.category, x.id, x.status])
+                      : title === "Borrowed Books"
+                        ? t.filter((x) => x.status === "Borrowed").map((x) => [x.book, x.student, x.date, x.due])
+                        : title === "Returned Books"
+                          ? t.filter((x) => x.status === "Returned").map((x) => [x.book, x.student, x.date])
+                          : title === "Overdue Books"
+                            ? t
+                                .filter((x) => x.status === "Borrowed" && x.due < new Date().toISOString().slice(0, 10))
+                                .map((x) => [x.book, x.student, x.due])
+                            : s.map((x) => [x.id, x.name, x.course, x.email, x.status]);
+                let text = [title, "", ...rows.map((r) => r.join(" | "))].join("\\n");
+                let blob = new Blob([text], { type: "text/plain" }),
+                  url = URL.createObjectURL(blob),
+                  a = document.createElement("a");
+                a.href = url;
+                a.download = title.toLowerCase().replaceAll(" ", "-") + ".txt";
+                a.click();
+                URL.revokeObjectURL(url);
+                toast(title + " generated");
+              };
+          });
+        }
+        function pageSettings() {
+          const profile = get(KEY_PROFILE, { name: "Admin Librarian", email: "library@britech.edu.ph" }),
+            inputs = document.querySelectorAll(".settings-input");
+          let name = inputs[1],
+            email = inputs[2];
+          if (name) name.value = profile.name;
+          if (email) email.value = profile.email;
+          const buttons = [...document.querySelectorAll("button")],
+            save = buttons.find((b) => b.textContent.trim() === "Save Changes"),
+            update = buttons.find((b) => b.textContent.trim() === "Update Password");
+          if (save)
+            save.onclick = () => {
+              let n = name.value.trim(),
+                e = email.value.trim();
+              if (!n || !e) return toast("Name and email are required");
+              set(KEY_PROFILE, { name: n, email: e });
+              toast("Profile saved");
+            };
+          if (update)
+            update.onclick = () => {
+              let pw = document.querySelectorAll('input[type="password"]');
+              if (!pw[0].value || !pw[1].value || !pw[2].value) return toast("Complete all password fields");
+              if (pw[1].value !== pw[2].value) return toast("New passwords do not match");
+              if (pw[1].value.length < 6) return toast("Password must be at least 6 characters");
+              pw.forEach((x) => (x.value = ""));
+              toast("Password updated");
+            };
+          const prefs = get(KEY_PREF, { email: true, newStudents: false }),
+            checks = document.querySelectorAll('input[type="checkbox"]');
+          checks.forEach((c, i) => {
+            c.checked = i === 0 ? !!prefs.email : !!prefs.newStudents;
+            c.onchange = () => {
+              let p = get(KEY_PREF, { email: true, newStudents: false });
+              if (i === 0) p.email = c.checked;
+              else p.newStudents = c.checked;
+              set(KEY_PREF, p);
+              toast("Preference saved");
+            };
+          });
+        }
+        function init() {
+          wireNav();
+          let title = document.title.toLowerCase();
+          if (title.includes("books")) pageBooks();
+          else if (title.includes("students")) pageStudents();
+          else if (title.includes("borrow / return")) pageBorrowReturn();
+          else if (title.includes("dashboard")) pageDashboard();
+          else if (title.includes("reports")) pageReports();
+          else if (title.includes("settings")) pageSettings();
+          // Make top-level search box visually borderless everywhere.
+          document.querySelectorAll(".topbar .search-input").forEach((i) => {
+            i.style.border = "0";
+            i.style.background = "transparent";
+            i.style.boxShadow = "none";
+          });
+        }
+        if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+        else init();
+      })();
+    </script>
+  </body>
+</html>

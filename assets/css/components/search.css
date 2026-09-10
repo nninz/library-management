@@ -4,32 +4,32 @@ Search box and search button
 ========================================= */
 
 .search-content {
-    max-width: 800px;
+  max-width: 800px;
 }
 
 .search-box {
-    max-width: 800px;
-    transition: 0.3s ease;
+  max-width: 800px;
+  transition: 0.3s ease;
 }
 
 .search-box:focus-within {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .search-box input {
-    outline: none;
+  outline: none;
 }
 
 .search-box input:focus {
-    outline: none;
+  outline: none;
 }
 
 .search-box button {
-    cursor: pointer;
-    transition: 0.3s ease;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .search-box button:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }

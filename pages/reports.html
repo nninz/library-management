@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports | Britech College Library</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <style>
+      body {
+        background-color: var(--color-accent);
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 260px;
+        flex-shrink: 0;
+        background-color: var(--color-secondary);
+        color: var(--color-white);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-24) var(--space-20);
+        border-bottom: var(--border-thin) solid rgba(255, 255, 255, 0.12);
+      }
+
+      .sidebar-brand img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .sidebar-brand h2 {
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: 0.03em;
+        color: var(--color-white);
+        line-height: 1.2;
+      }
+
+      .sidebar-brand p {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        padding: var(--space-16) var(--space-12);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-12) var(--space-16);
+        border-radius: var(--radius-md);
+        color: rgba(255, 255, 255, 0.75);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-medium);
+        transition:
+          background-color var(--transition-fast) ease,
+          color var(--transition-fast) ease;
+      }
+
+      .sidebar-link i {
+        width: 18px;
+        text-align: center;
+      }
+
+      .sidebar-link:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: var(--color-white);
+      }
+
+      .sidebar-link.active {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .sidebar-logout {
+        padding: var(--space-16) var(--space-20);
+        border-top: var(--border-thin) solid rgba(255, 255, 255, 0.12);
+      }
+
+      .main-area {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        background-color: var(--color-white);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+
+      .search-input {
+        width: 100%;
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--color-primary);
+      }
+
+      .notif-dot {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-navy);
+        border: 2px solid var(--color-white);
+      }
+
+      .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-14);
+        flex-shrink: 0;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: var(--space-4) var(--space-12);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-12);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .status-available {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-borrowed {
+        background-color: var(--color-navy-50);
+        color: var(--color-secondary);
+      }
+      .status-returned {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-due {
+        background-color: #fde2e2;
+        color: #b3261e;
+      }
+      .status-active {
+        background-color: #dcf5e6;
+        color: #1e7d43;
+      }
+      .status-inactive {
+        background-color: #fde2e2;
+        color: #b3261e;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table th {
+        text-align: left;
+        font-size: var(--font-size-12);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-gray);
+        padding: var(--space-12) var(--space-8);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+      }
+
+      .data-table td {
+        padding: var(--space-16) var(--space-8);
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+        font-size: var(--font-size-14);
+        color: var(--color-dark);
+      }
+
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--color-gray);
+        padding: var(--space-4);
+        transition: color var(--transition-fast) ease;
+      }
+
+      .icon-btn:hover {
+        color: var(--color-primary);
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-8);
+      }
+
+      .page-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        border: var(--border-thin) solid var(--color-light-gray);
+        color: var(--color-gray);
+        font-size: var(--font-size-14);
+        cursor: pointer;
+        background-color: var(--color-white);
+      }
+
+      .page-btn.active {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .filter-select {
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+        background-color: var(--color-white);
+        color: var(--color-dark);
+      }
+
+      .report-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-16);
+        background-color: var(--color-primary-50);
+        color: var(--color-primary);
+      }
+
+      .tab-btn {
+        background: none;
+        border: none;
+        padding: var(--space-12) var(--space-4);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-gray);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+      }
+
+      .tab-btn.active {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-primary);
+      }
+
+      .due-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-12);
+        padding: var(--space-12) 0;
+        border-bottom: var(--border-thin) solid var(--color-light-gray);
+      }
+
+      .due-item:last-child {
+        border-bottom: none;
+      }
+
+      .due-cover {
+        width: 40px;
+        height: 52px;
+        border-radius: var(--radius-sm);
+        background-color: var(--color-accent);
+        color: var(--color-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .settings-input {
+        width: 100%;
+        border: var(--border-thin) solid var(--color-light-gray);
+        outline: none;
+      }
+
+      .settings-input:focus {
+        border-color: var(--color-primary);
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--color-light-gray);
+        border-radius: var(--radius-full);
+        transition: background-color var(--transition-fast) ease;
+      }
+
+      .toggle-slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: var(--color-white);
+        border-radius: var(--radius-full);
+        transition: transform var(--transition-fast) ease;
+      }
+
+      .toggle-switch input:checked + .toggle-slider {
+        background-color: var(--color-primary);
+      }
+
+      .toggle-switch input:checked + .toggle-slider::before {
+        transform: translateX(20px);
+      }
+
+      @media (max-width: 860px) {
+        .sidebar {
+          display: none;
+        }
+      }
+
+      /* =========================
+         REPORT MODAL
+      ========================= */
+      .report-generate-btn {
+        cursor: pointer;
+        transition:
+          transform 0.12s ease,
+          opacity 0.12s ease;
+      }
+      .report-generate-btn:hover {
+        opacity: 0.92;
+      }
+      .report-generate-btn:active {
+        transform: scale(0.98);
+      }
+
+      .report-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: none;
+      }
+      .report-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .report-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(23, 50, 77, 0.38);
+      }
+      .report-modal-card {
+        position: relative;
+        width: min(900px, 96vw);
+        max-height: 90vh;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: reportModalIn 0.16s ease;
+      }
+      @keyframes reportModalIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(0.99);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .report-modal-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 20px 22px;
+        border-bottom: 1px solid #e9edf0;
+      }
+      .report-modal-header h2 {
+        margin: 0;
+        color: var(--color-secondary);
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .report-modal-header p {
+        margin: 4px 0 0;
+        color: var(--color-gray);
+        font-size: 11px;
+      }
+      .report-close {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        background: transparent;
+        color: var(--color-gray);
+        border-radius: 7px;
+        cursor: pointer;
+        font-size: 15px;
+      }
+      .report-close:hover {
+        background: #f5f7f9;
+        color: var(--color-secondary);
+      }
+
+      .report-summary {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 14px 22px;
+        background: #fafbfc;
+        border-bottom: 1px solid #e9edf0;
+      }
+      .report-summary-item {
+        min-width: 120px;
+        padding: 9px 12px;
+        border: 1px solid #e6eaed;
+        border-radius: 7px;
+        background: #fff;
+      }
+      .report-summary-item small {
+        display: block;
+        color: var(--color-gray);
+        font-size: 10px;
+      }
+      .report-summary-item strong {
+        display: block;
+        margin-top: 2px;
+        color: var(--color-secondary);
+        font-size: 15px;
+      }
+
+      .report-table-wrap {
+        overflow: auto;
+        padding: 0 22px;
+      }
+      .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 650px;
+      }
+      .report-table th {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        color: var(--color-gray);
+        text-align: left;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 12px 10px;
+        border-bottom: 1px solid #dfe5e9;
+        white-space: nowrap;
+      }
+      .report-table td {
+        color: var(--color-secondary);
+        font-size: 11px;
+        padding: 12px 10px;
+        border-bottom: 1px solid #edf0f2;
+        vertical-align: top;
+      }
+      .report-table tr:hover td {
+        background: #fcfdfe;
+      }
+      .report-status {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 9px;
+        font-weight: 600;
+      }
+      .status-available {
+        background: #e9f6ee;
+        color: #287943;
+      }
+      .status-borrowed {
+        background: #fff3df;
+        color: #a86800;
+      }
+      .status-overdue {
+        background: #fde8e8;
+        color: #b3261e;
+      }
+      .status-returned {
+        background: #eaf3f9;
+        color: #1f5f8b;
+      }
+      .status-inactive {
+        background: #f0f1f2;
+        color: #707982;
+      }
+
+      .report-empty {
+        padding: 50px 20px;
+        text-align: center;
+        color: var(--color-gray);
+      }
+      .report-empty i {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .report-empty p {
+        margin: 0;
+        font-size: 12px;
+      }
+
+      .report-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 14px 22px;
+        border-top: 1px solid #e9edf0;
+        background: #fafbfc;
+      }
+      .report-secondary-btn,
+      .report-primary-btn {
+        border: 0;
+        border-radius: 7px;
+        padding: 9px 15px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .report-secondary-btn {
+        background: #fff;
+        color: var(--color-secondary);
+        border: 1px solid #dfe5e9;
+      }
+      .report-primary-btn {
+        background: var(--color-primary);
+        color: #fff;
+      }
+      .report-secondary-btn:hover {
+        background: #f4f6f8;
+      }
+      .report-primary-btn:hover {
+        opacity: 0.92;
+      }
+
+      @media (max-width: 700px) {
+        .report-modal.show {
+          padding: 12px;
+        }
+        .report-modal-card {
+          max-height: 94vh;
+        }
+        .report-modal-footer {
+          padding: 12px 16px;
+        }
+        .report-summary {
+          padding: 12px 16px;
+        }
+        .report-table-wrap {
+          padding: 0 16px;
+        }
+        .report-modal-header {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- =========================
+         SIDEBAR
+    ========================= -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img src="../assets/images/logo/britech-logo (1).png" alt="Britech College Logo" />
+          <div>
+            <h2>BRITECH LIBRARY</h2>
+            <p>MANAGEMENT SYSTEM</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="sidebar-link"> <i class="fa-solid fa-gauge"></i> Dashboard </a>
+          <a href="books.html" class="sidebar-link"> <i class="fa-solid fa-book"></i> Books </a>
+          <a href="borrow-return.html" class="sidebar-link"> <i class="fa-solid fa-right-left"></i> Borrow / Return </a>
+          <a href="students.html" class="sidebar-link"> <i class="fa-solid fa-user-graduate"></i> Students </a>
+          <a href="reports.html" class="sidebar-link active"> <i class="fa-solid fa-chart-column"></i> Reports </a>
+          <a href="settings.html" class="sidebar-link"> <i class="fa-solid fa-gear"></i> Settings </a>
+        </nav>
+
+        <div class="sidebar-logout">
+          <a href="../auth/sign-in.html" class="sidebar-link" style="padding-left: 0">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+         MAIN AREA
+    ========================= -->
+      <div class="main-area">
+        <!-- Topbar -->
+        <header class="topbar px-8 py-4">
+          <div class="d-flex items-center justify-between gap-6">
+            <div style="max-width: 420px; width: 100%">
+              <div class="d-flex items-center gap-3 bg-white border border-light-gray radius-full px-5 py-3">
+                <i class="fa-solid fa-magnifying-glass text-gray"></i>
+                <input
+                  type="text"
+                  placeholder="Search books, students, transactions..."
+                  class="search-input border-0 text-14"
+                  style="background: transparent"
+                />
+              </div>
+            </div>
+
+            <div class="d-flex items-center gap-6">
+              <div style="position: relative">
+                <i class="fa-regular fa-bell text-gray text-xl"></i>
+                <span class="notif-dot"></span>
+              </div>
+
+              <div class="d-flex items-center gap-3">
+                <div class="avatar-circle">AL</div>
+                <div>
+                  <p class="text-secondary text-14 font-semibold">Admin Librarian</p>
+                  <p class="text-gray text-12">Librarian</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page content -->
+        <main class="px-8 py-8">
+          <h1 class="text-secondary text-3xl font-bold mb-8">Reports</h1>
+
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px">
+            <div class="bg-white radius-lg shadow-sm p-6 text-center">
+              <div class="report-icon-box mx-auto mb-4"><i class="fa-solid fa-book"></i></div>
+              <p class="text-secondary font-semibold text-14 mb-1">Books Report</p>
+              <p class="text-gray text-12 mb-4">View all books</p>
+              <button
+                type="button"
+                data-report="books"
+                class="bg-primary text-white px-4 py-2 radius-md text-14 font-semibold border-0 w-100 report-generate-btn"
+              >
+                Generate
+              </button>
+            </div>
+
+            <div class="bg-white radius-lg shadow-sm p-6 text-center">
+              <div class="report-icon-box mx-auto mb-4"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+              <p class="text-secondary font-semibold text-14 mb-1">Borrowed Books</p>
+              <p class="text-gray text-12 mb-4">Current borrowed</p>
+              <button
+                type="button"
+                data-report="borrowed"
+                class="bg-primary text-white px-4 py-2 radius-md text-14 font-semibold border-0 w-100 report-generate-btn"
+              >
+                Generate
+              </button>
+            </div>
+
+            <div class="bg-white radius-lg shadow-sm p-6 text-center">
+              <div class="report-icon-box mx-auto mb-4"><i class="fa-solid fa-check"></i></div>
+              <p class="text-secondary font-semibold text-14 mb-1">Returned Books</p>
+              <p class="text-gray text-12 mb-4">All returned books</p>
+              <button
+                type="button"
+                data-report="returned"
+                class="bg-primary text-white px-4 py-2 radius-md text-14 font-semibold border-0 w-100 report-generate-btn"
+              >
+                Generate
+              </button>
+            </div>
+
+            <div class="bg-white radius-lg shadow-sm p-6 text-center">
+              <div class="report-icon-box mx-auto mb-4" style="background-color: #fde2e2; color: #b3261e">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <p class="text-secondary font-semibold text-14 mb-1">Overdue Books</p>
+              <p class="text-gray text-12 mb-4">List of overdue</p>
+              <button
+                type="button"
+                data-report="overdue"
+                class="bg-primary text-white px-4 py-2 radius-md text-14 font-semibold border-0 w-100 report-generate-btn"
+              >
+                Generate
+              </button>
+            </div>
+
+            <div class="bg-white radius-lg shadow-sm p-6 text-center">
+              <div class="report-icon-box mx-auto mb-4"><i class="fa-solid fa-user-graduate"></i></div>
+              <p class="text-secondary font-semibold text-14 mb-1">Students Report</p>
+              <p class="text-gray text-12 mb-4">List of students</p>
+              <button
+                type="button"
+                data-report="students"
+                class="bg-primary text-white px-4 py-2 radius-md text-14 font-semibold border-0 w-100 report-generate-btn"
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- REPORT PREVIEW MODAL -->
+    <div id="reportModal" class="report-modal" aria-hidden="true">
+      <div class="report-modal-backdrop" id="reportBackdrop"></div>
+      <div class="report-modal-card" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
+        <div class="report-modal-header">
+          <div>
+            <h2 id="reportModalTitle">Report</h2>
+            <p id="reportModalSubtitle">Library report</p>
+          </div>
+          <button type="button" id="closeReportModal" class="report-close" aria-label="Close report">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="report-summary" id="reportSummary"></div>
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <thead id="reportTableHead"></thead>
+            <tbody id="reportTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="reportEmpty" class="report-empty" style="display: none">
+          <i class="fa-solid fa-folder-open"></i>
+          <p>No records found for this report.</p>
+        </div>
+
+        <div class="report-modal-footer">
+          <button type="button" id="printReport" class="report-secondary-btn">
+            <i class="fa-solid fa-print"></i> Print
+          </button>
+          <button type="button" id="downloadReport" class="report-primary-btn">
+            <i class="fa-solid fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const modal = document.getElementById("reportModal");
+        const backdrop = document.getElementById("reportBackdrop");
+        const closeBtn = document.getElementById("closeReportModal");
+        const titleEl = document.getElementById("reportModalTitle");
+        const subtitleEl = document.getElementById("reportModalSubtitle");
+        const summaryEl = document.getElementById("reportSummary");
+        const headEl = document.getElementById("reportTableHead");
+        const bodyEl = document.getElementById("reportTableBody");
+        const emptyEl = document.getElementById("reportEmpty");
+        const printBtn = document.getElementById("printReport");
+        const downloadBtn = document.getElementById("downloadReport");
+
+        let currentReport = null;
+        let currentRows = [];
+
+        const fallbackBooks = [
+          {
+            id: "B001",
+            title: "Introduction to HTML",
+            author: "John Smith",
+            category: "Technology",
+            isbn: "978-1234567890",
+            status: "Available",
+          },
+          {
+            id: "B002",
+            title: "Java Programming",
+            author: "Deitel, H.M.",
+            category: "Programming",
+            isbn: "978-9811234567",
+            status: "Borrowed",
+          },
+          {
+            id: "B003",
+            title: "Database System Concepts",
+            author: "Silberschatz, Korth",
+            category: "Database",
+            isbn: "978-0078022159",
+            status: "Available",
+          },
+          {
+            id: "B004",
+            title: "Web Design Basics",
+            author: "John Duckett",
+            category: "Web Development",
+            isbn: "978-1118008188",
+            status: "Available",
+          },
+          {
+            id: "B005",
+            title: "Operating System Concepts",
+            author: "Abraham Silberschatz",
+            category: "Computer Science",
+            isbn: "978-1119456330",
+            status: "Borrowed",
+          },
+          {
+            id: "B006",
+            title: "Python Basics",
+            author: "Dennis R. Downey",
+            category: "Programming",
+            isbn: "978-0134692883",
+            status: "Available",
+          },
+        ];
+
+        const fallbackStudents = [
+          { id: "2024001", name: "Juan Dela Cruz", course: "BSIT", status: "Active" },
+          { id: "2024002", name: "Maria Santos", course: "BSIS", status: "Active" },
+          { id: "2024003", name: "Pedro Garcia", course: "BSIT", status: "Active" },
+          { id: "2024004", name: "Ana Reyes", course: "BSCS", status: "Inactive" },
+          { id: "2024005", name: "Mark Villanueva", course: "BSIT", status: "Active" },
+        ];
+
+        function get(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+          } catch (e) {
+            return fallback;
+          }
+        }
+
+        function esc(value) {
+          const d = document.createElement("div");
+          d.textContent = value == null ? "" : String(value);
+          return d.innerHTML;
+        }
+
+        function normalizeBooks() {
+          const books = get("library_books", fallbackBooks);
+          return Array.isArray(books) && books.length ? books : fallbackBooks;
+        }
+
+        function normalizeStudents() {
+          const students = get("library_students", fallbackStudents);
+          return Array.isArray(students) && students.length ? students : fallbackStudents;
+        }
+
+        function normalizeTransactions() {
+          const tx = get("library_transactions", []);
+          return Array.isArray(tx) ? tx : [];
+        }
+
+        function dateValue(v) {
+          if (!v) return null;
+          const d = new Date(v);
+          return isNaN(d.getTime()) ? null : d;
+        }
+
+        function formatDate(v) {
+          const d = dateValue(v);
+          if (!d) return v || "—";
+          return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        }
+
+        function statusBadge(status) {
+          const s = String(status || "").toLowerCase();
+          let cls = "status-returned";
+          if (s === "available") cls = "status-available";
+          else if (s === "borrowed") cls = "status-borrowed";
+          else if (s === "overdue") cls = "status-overdue";
+          else if (s === "inactive") cls = "status-inactive";
+          return '<span class="report-status ' + cls + '">' + esc(status || "—") + "</span>";
+        }
+
+        function activeBorrowed(tx) {
+          return tx.filter((t) => {
+            const status = String(t.status || "").toLowerCase();
+            const type = String(t.type || "").toLowerCase();
+            return status === "borrowed" || type === "borrow";
+          });
+        }
+
+        function buildReport(type) {
+          const books = normalizeBooks();
+          const students = normalizeStudents();
+          const tx = normalizeTransactions();
+
+          if (type === "books") {
+            return {
+              title: "Books Report",
+              subtitle: "Complete list of books in the library",
+              columns: ["Book ID", "Book Title", "Author", "Category", "ISBN", "Status"],
+              rows: books.map((b) => [
+                b.id || b.bookId || "—",
+                b.title || b.name || "—",
+                b.author || "—",
+                b.category || "—",
+                b.isbn || "—",
+                statusBadge(b.status || "Available"),
+              ]),
+              count: books.length,
+            };
+          }
+
+          if (type === "borrowed") {
+            const rows = activeBorrowed(tx);
+            return {
+              title: "Borrowed Books",
+              subtitle: "Books currently borrowed by students",
+              columns: ["Book", "Student", "Borrow Date", "Due Date", "Status"],
+              rows: rows.map((t) => [
+                t.book || t.bookTitle || "—",
+                t.student || t.studentName || t.studentId || "—",
+                formatDate(t.borrowDate || t.date),
+                formatDate(t.due),
+                statusBadge("Borrowed"),
+              ]),
+              count: rows.length,
+            };
+          }
+
+          if (type === "returned") {
+            const rows = tx.filter((t) => {
+              const s = String(t.status || "").toLowerCase();
+              const type = String(t.type || "").toLowerCase();
+              return s === "returned" || type === "return";
+            });
+            return {
+              title: "Returned Books",
+              subtitle: "Books that have been returned",
+              columns: ["Book", "Student", "Borrow Date", "Return Date", "Status"],
+              rows: rows.map((t) => [
+                t.book || t.bookTitle || "—",
+                t.student || t.studentName || t.studentId || "—",
+                formatDate(t.borrowDate || t.date),
+                formatDate(t.returnDate || t.returnedDate || t.date),
+                statusBadge("Returned"),
+              ]),
+              count: rows.length,
+            };
+          }
+
+          if (type === "overdue") {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const rows = activeBorrowed(tx).filter((t) => {
+              const d = dateValue(t.due);
+              if (!d) return false;
+              d.setHours(0, 0, 0, 0);
+              return d < now;
+            });
+            return {
+              title: "Overdue Books",
+              subtitle: "Books past their due date",
+              columns: ["Book", "Student", "Due Date", "Days Overdue", "Status"],
+              rows: rows.map((t) => {
+                const d = dateValue(t.due);
+                d.setHours(0, 0, 0, 0);
+                const days = Math.max(1, Math.round((now - d) / 86400000));
+                return [
+                  t.book || t.bookTitle || "—",
+                  t.student || t.studentName || t.studentId || "—",
+                  formatDate(t.due),
+                  String(days),
+                  statusBadge("Overdue"),
+                ];
+              }),
+              count: rows.length,
+            };
+          }
+
+          return {
+            title: "Students Report",
+            subtitle: "Registered students in the library system",
+            columns: ["Student ID", "Name", "Course", "Status"],
+            rows: students.map((st) => [
+              st.id || st.studentId || "—",
+              st.name || st.fullName || "—",
+              st.course || st.program || "—",
+              statusBadge(st.status || "Active"),
+            ]),
+            count: students.length,
+          };
+        }
+
+        function renderReport(type) {
+          currentReport = type;
+          const report = buildReport(type);
+          currentRows = report.rows;
+
+          titleEl.textContent = report.title;
+          subtitleEl.textContent = report.subtitle;
+
+          summaryEl.innerHTML =
+            '<div class="report-summary-item"><small>Total Records</small><strong>' +
+            report.count +
+            "</strong></div>" +
+            '<div class="report-summary-item"><small>Generated</small><strong>' +
+            new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) +
+            "</strong></div>";
+
+          headEl.innerHTML = "<tr>" + report.columns.map((c) => "<th>" + esc(c) + "</th>").join("") + "</tr>";
+
+          bodyEl.innerHTML = report.rows
+            .map((row) => "<tr>" + row.map((cell) => "<td>" + cell + "</td>").join("") + "</tr>")
+            .join("");
+
+          emptyEl.style.display = report.rows.length ? "none" : "block";
+          document.body.style.overflow = "hidden";
+          modal.classList.add("show");
+          modal.setAttribute("aria-hidden", "false");
+        }
+
+        function closeReport() {
+          modal.classList.remove("show");
+          modal.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+        }
+
+        function plainRows() {
+          const report = buildReport(currentReport);
+          return [report.columns].concat(
+            currentRows.map((row) =>
+              row.map((cell) => {
+                const tmp = document.createElement("div");
+                tmp.innerHTML = cell;
+                return tmp.textContent || tmp.innerText || "";
+              }),
+            ),
+          );
+        }
+
+        function downloadReportFile() {
+          if (!currentReport) return;
+          const report = buildReport(currentReport);
+          const rows = plainRows();
+          const text =
+            report.title.toUpperCase() +
+            "\n" +
+            report.subtitle +
+            "\nGenerated: " +
+            new Date().toLocaleString() +
+            "\n\n" +
+            rows.map((r) => r.join(" | ")).join("\n");
+          const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = currentReport + "-report.txt";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 500);
+        }
+
+        function printReportPage() {
+          if (!currentReport) return;
+          const report = buildReport(currentReport);
+          const table = document.querySelector(".report-table").outerHTML;
+          const w = window.open("", "_blank", "width=1000,height=700");
+          if (!w) return;
+          w.document.write(`
+            <!doctype html>
+            <html><head><title>${esc(report.title)}</title>
+            <style>
+              body{font-family:Arial,sans-serif;padding:30px;color:#17324d}
+              h1{font-size:22px;margin:0 0 5px}
+              p{color:#777;font-size:12px}
+              table{width:100%;border-collapse:collapse;margin-top:20px}
+              th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:11px}
+              th{background:#f5f6f7}
+            </style></head>
+            <body><h1>${esc(report.title)}</h1><p>${esc(report.subtitle)} · Generated ${new Date().toLocaleString()}</p>${table}</body></html>
+          `);
+          w.document.close();
+          w.focus();
+          setTimeout(() => w.print(), 250);
+        }
+
+        document.querySelectorAll(".report-generate-btn").forEach((btn) => {
+          btn.addEventListener("click", () => renderReport(btn.dataset.report));
+        });
+
+        closeBtn.addEventListener("click", closeReport);
+        backdrop.addEventListener("click", closeReport);
+        downloadBtn.addEventListener("click", downloadReportFile);
+        printBtn.addEventListener("click", printReportPage);
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.classList.contains("show")) closeReport();
+        });
+      })();
+    </script>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

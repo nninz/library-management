@@ -4,15 +4,15 @@
 ========================================= */
 
 .announcement {
-    padding: 45px 8%;
+  padding: 45px 8%;
 }
 
 .announcement-icon {
-    width: 65px;
-    height: 65px;
-    font-size: 25px;
+  width: 65px;
+  height: 65px;
+  font-size: 25px;
 }
 
 .announcement-text {
-    color: #E8D9DE;
+  color: #e8d9de;
 }
