@@ -3,30 +3,30 @@
 ========================================= */
 
 .footer-bg {
-    background: var(--color-secondary);
+  background: var(--color-secondary);
 }
 
 .footer-grid {
-    grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
 }
 
 .footer-muted {
-    color: #E8D9DE;
+  color: #e8d9de;
 }
 
 .footer-link {
-    color: #E8D9DE;
-    transition: var(--transition-fast);
+  color: #e8d9de;
+  transition: var(--transition-fast);
 }
 
 .footer-link:hover {
-    color: var(--color-navy);
+  color: var(--color-navy);
 }
 
 .footer-bottom {
-    border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .footer-copy {
-    color: #C8AAB5;
+  color: #c8aab5;
 }

@@ -4,80 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In | Britech College Library</title>
-
-    <link rel="stylesheet" href="../assets/css/base/reset.css" />
-    <link rel="stylesheet" href="../assets/css/base/theme.css" />
-    <link rel="stylesheet" href="../assets/css/base/colors.css" />
-    <link rel="stylesheet" href="../assets/css/base/display.css" />
-    <link rel="stylesheet" href="../assets/css/base/flex.css" />
-    <link rel="stylesheet" href="../assets/css/base/gap.css" />
-    <link rel="stylesheet" href="../assets/css/base/width.css" />
-    <link rel="stylesheet" href="../assets/css/base/height.css" />
-    <link rel="stylesheet" href="../assets/css/base/margin.css" />
-    <link rel="stylesheet" href="../assets/css/base/padding.css" />
-    <link rel="stylesheet" href="../assets/css/base/border.css" />
-    <link rel="stylesheet" href="../assets/css/base/radius.css" />
-    <link rel="stylesheet" href="../assets/css/base/shadow.css" />
-    <link rel="stylesheet" href="../assets/css/base/text.css" />
-    <link rel="stylesheet" href="../assets/css/base/position.css" />
-    <link rel="stylesheet" href="../assets/css/base/z-index.css" />
-    <link rel="stylesheet" href="../assets/css/base/opacity.css" />
-    <link rel="stylesheet" href="../assets/css/base/overflow.css" />
+    s
 
     <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/pages/sign-in.css" />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-
-    <style>
-      .auth-wrapper {
-        min-height: calc(100vh - 78px);
-      }
-
-      .input-group {
-        transition: border-color var(--transition-fast) ease;
-      }
-
-      .input-group:focus-within {
-        border-color: var(--color-primary);
-      }
-
-      .input-group input {
-        outline: none;
-      }
-
-      .toggle-visibility {
-        cursor: pointer;
-      }
-
-      .btn-submit {
-        cursor: pointer;
-      }
-
-      .auth-divider {
-        position: relative;
-        text-align: center;
-      }
-
-      .auth-divider::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        height: var(--border-thin);
-        background-color: var(--color-light-gray);
-      }
-
-      .auth-divider span {
-        position: relative;
-        background-color: var(--color-white);
-        padding: 0 var(--space-12);
-      }
-    </style>
   </head>
 
   <body>
@@ -150,10 +86,13 @@
               <button
                 type="button"
                 id="togglePassword"
-                class="toggle-visibility bg-transparent text-gray border-0 flex-shrink-0"
+                class="toggle-visibility bg-transparent border-0 flex-shrink-0"
                 aria-label="Show password"
               >
-                <i class="fa-solid fa-eye"></i>
+                <span class="icon-stack">
+                  <i class="fa-solid fa-eye icon-eye"></i>
+                  <i class="fa-solid fa-eye-slash icon-eye-slash"></i>
+                </span>
               </button>
             </div>
           </div>
@@ -218,41 +157,5 @@
      JAVASCRIPT
 ========================= -->
     <script src="../assets/js/main.js"></script>
-    <script>
-      const toggleBtn = document.getElementById("togglePassword");
-      const pwField = document.getElementById("loginPassword");
-      if (toggleBtn && pwField) {
-        toggleBtn.addEventListener("click", () => {
-          const isHidden = pwField.type === "password";
-          pwField.type = isHidden ? "text" : "password";
-          toggleBtn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
-        });
-      }
-
-      const form = document.getElementById("signInForm");
-      const errorMsg = document.getElementById("loginError");
-      if (form) {
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const id = document.getElementById("loginId").value.trim();
-          const pw = document.getElementById("loginPassword").value.trim();
-
-          if (!id || !pw) {
-            errorMsg.textContent = "Please enter both your username/email and password.";
-            errorMsg.style.display = "block";
-            return;
-          }
-
-          errorMsg.style.display = "none";
-        
-          console.log("Submitting login for:", id);
-        });
-      }
-
-      const yearEl = document.getElementById("year");
-      if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
-      }
-    </script>
   </body>
 </html>

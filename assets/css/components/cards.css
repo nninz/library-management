@@ -3,103 +3,98 @@
    Statistics, Services, and Contact Cards
 ========================================= */
 
-
 /* =========================================
    STATISTICS CARDS
 ========================================= */
 
 .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .stat-card {
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
-
 
 /* =========================================
    SERVICE CARDS
 ========================================= */
 
 .services-grid {
-    grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .service-card {
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
 .service-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 25px;
+  width: 60px;
+  height: 60px;
+  font-size: 25px;
 }
-
 
 /* =========================================
    CONTACT CARDS
 ========================================= */
 
 .contact-grid {
-    max-width: 1000px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .contact-grid > div {
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .contact-grid > div:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
-
 
 /* =========================================
    ABOUT
 ========================================= */
 
 .about-grid {
-    grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .about-img {
-    height: 400px;
-    object-fit: cover;
+  height: 400px;
+  object-fit: cover;
 }
-
 
 /* =========================================
    SECTION HEADING
 ========================================= */
 
 .section-heading {
-    max-width: 700px;
+  max-width: 700px;
 }
 
 .section-heading p {
-    letter-spacing: 1.5px;
+  letter-spacing: 1.5px;
 }

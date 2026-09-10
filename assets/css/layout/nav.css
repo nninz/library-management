@@ -4,26 +4,26 @@
 ========================================= */
 
 .nav-link {
-    color: var(--color-dark);
-    display: inline-block;
+  color: var(--color-dark);
+  display: inline-block;
 
-    transition:
-        color 0.3s ease,
-        transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--color-primary);
-    transform: translateY(-3px);
+  color: var(--color-primary);
+  transform: translateY(-3px);
 }
 
 .nav-link.active {
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
-    border-bottom: 3px solid var(--color-navy);
-    padding-bottom: 5px;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  border-bottom: 3px solid var(--color-navy);
+  padding-bottom: 5px;
 }
 
 .nav-link.active:hover {
-    transform: translateY(-3px);
+  transform: translateY(-3px);
 }

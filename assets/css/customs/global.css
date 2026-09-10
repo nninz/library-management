@@ -5,17 +5,14 @@
 ========================================= */
 
 body {
-    font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .container {
-    max-width: 1250px;
+  max-width: 1250px;
 }
 
-/* The framework's margin.css only defines mx-0 through mx-32
-   (fixed values) — it has no auto-centering class, so this
-   is added here for every element using "mx-auto" in the HTML. */
 .mx-auto {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
